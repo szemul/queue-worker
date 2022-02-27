@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Szemul\QueueWorker\Test;
 
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class NoopTest extends TestCase
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Szemul\QueueWorker\EventHandler;
 
 use Psr\Log\LoggerInterface;
-use Szemul\QueueWorker\Message\MessageInterface;
+use Szemul\Queue\Message\MessageInterface;
 use Throwable;
 
 class LoggingEventHandler implements CommandEventHandlerInterface, WorkerEventHandlerInterface

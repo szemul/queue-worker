@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Szemul\QueueWorker\MessageProcessor;
 
-use Szemul\QueueWorker\Message\MessageInterface;
+use Szemul\Queue\Message\MessageInterface;
 
 interface MessageProcessorInterface
 {

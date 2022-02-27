@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Szemul\QueueWorker\Worker;
 
+use Szemul\Queue\Queue\ConsumerInterface;
 use Szemul\QueueWorker\EventHandler\WorkerEventHandlerInterface;
 use Szemul\QueueWorker\MessageProcessor\MessageProcessorInterface;
-use Szemul\QueueWorker\Queue\QueueInterface;
 use Szemul\QueueWorker\Value\InterruptedValue;
 use Throwable;
 
@@ -13,7 +13,7 @@ class QueueWorker implements WorkerInterface
 {
     protected ?WorkerEventHandlerInterface $eventHandler = null;
 
-    public function __construct(protected QueueInterface $queue, protected MessageProcessorInterface $processor)
+    public function __construct(protected ConsumerInterface $queue, protected MessageProcessorInterface $processor)
     {
     }
 
