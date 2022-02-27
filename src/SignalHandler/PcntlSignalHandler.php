@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Szemul\QueueWorker\SignalHandler;
 
-class PcntlSignalHandler
+class PcntlSignalHandler implements SignalHandlerInterface
 {
     /** @var int[] */
     protected array $handledSignals;

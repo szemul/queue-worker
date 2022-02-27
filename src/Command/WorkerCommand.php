@@ -20,10 +20,10 @@ use Throwable;
 
 class WorkerCommand extends Command implements SignalReceiverInterface
 {
-    protected bool                          $isAborted                   = false;
     protected int                           $defaultMaxIterations        = 0;
     protected int                           $defaultTargetRuntimeSeconds = 600;
     protected ?CommandEventHandlerInterface $eventHandler                = null;
+    protected ?SignalHandlerInterface       $signalHandler               = null;
 
     public function __construct(
         protected DateHelper $dateHelper,
@@ -41,9 +41,9 @@ class WorkerCommand extends Command implements SignalReceiverInterface
         return $this;
     }
 
-    public function registerInSignalHandler(SignalHandlerInterface $signalHandler): static
+    public function setSignalHandler(SignalHandlerInterface $signalHandler): static
     {
-        $signalHandler->setReceiver($this);
+        $this->signalHandler = $signalHandler;
 
         return $this;
     }
@@ -69,6 +69,7 @@ class WorkerCommand extends Command implements SignalReceiverInterface
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->signalHandler?->setReceiver($this);
         $this->processInputs($input);
 
         $targetRunTimeSeconds = (int)$input->getOption('max-iterations');
