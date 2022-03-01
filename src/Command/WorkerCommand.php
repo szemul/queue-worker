@@ -29,7 +29,7 @@ class WorkerCommand extends Command implements SignalReceiverInterface
         protected DateHelper $dateHelper,
         protected InterruptedValue $interruptedValue,
         protected WorkerInterface $worker,
-        string $name = null,
+        ?string $name = null,
     ) {
         parent::__construct($name);
     }
