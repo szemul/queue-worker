@@ -28,7 +28,11 @@ class QueueWorker implements WorkerInterface
     {
         $message = $this->queue->getMessage();
 
-        if (null === $message || $interruptedValue->isInterruped()) {
+        if (null === $message) {
+            return;
+        }
+
+        if ($interruptedValue->isInterruped()) {
             $this->queue->abortMessage($message);
 
             return;
