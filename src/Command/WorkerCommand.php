@@ -34,14 +34,14 @@ class WorkerCommand extends Command implements SignalReceiverInterface
         parent::__construct($name);
     }
 
-    public function setEventHandler(CommandEventHandlerInterface $eventHandler): static
+    public function setEventHandler(?CommandEventHandlerInterface $eventHandler): static
     {
         $this->eventHandler = $eventHandler;
 
         return $this;
     }
 
-    public function setSignalHandler(SignalHandlerInterface $signalHandler): static
+    public function setSignalHandler(?SignalHandlerInterface $signalHandler): static
     {
         $this->signalHandler = $signalHandler;
 

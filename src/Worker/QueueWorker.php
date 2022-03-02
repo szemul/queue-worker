@@ -17,7 +17,7 @@ class QueueWorker implements WorkerInterface
     {
     }
 
-    public function setEventHandler(WorkerEventHandlerInterface $eventHandler): static
+    public function setEventHandler(?WorkerEventHandlerInterface $eventHandler): static
     {
         $this->eventHandler = $eventHandler;
 
