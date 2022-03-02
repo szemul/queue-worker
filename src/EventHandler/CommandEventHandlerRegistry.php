@@ -70,4 +70,18 @@ class CommandEventHandlerRegistry implements CommandEventHandlerInterface
             $handler->handleCommandFinished();
         }
     }
+
+    public function handleSignalReceived(int $signal): void
+    {
+        foreach ($this->handlers as $handler) {
+            $handler->handleSignalReceived($signal);
+        }
+    }
+
+    public function handleInterrupt(): void
+    {
+        foreach ($this->handlers as $handler) {
+            $handler->handleInterrupt();
+        }
+    }
 }

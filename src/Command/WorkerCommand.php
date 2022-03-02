@@ -120,11 +120,14 @@ class WorkerCommand extends Command implements SignalReceiverInterface
 
     public function receiveSignal(int $signal): void
     {
+        $this->eventHandler->handleSignalReceived($signal);
+
         switch ($signal) {
             case SIGTERM:
             case SIGHUP:
             case SIGINT:
                 $this->interruptedValue->setInterrupted(true);
+                $this->eventHandler->handleInterrupt();
                 break;
         }
     }

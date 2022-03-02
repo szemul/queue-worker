@@ -20,4 +20,8 @@ interface CommandEventHandlerInterface
     public function handleCommandInterrupted(): void;
 
     public function handleCommandFinished(): void;
+
+    public function handleSignalReceived(int $signal): void;
+
+    public function handleInterrupt(): void;
 }

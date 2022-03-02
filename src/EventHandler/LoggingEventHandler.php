@@ -44,6 +44,18 @@ class LoggingEventHandler implements CommandEventHandlerInterface, WorkerEventHa
         $this->logger->info('Worker shutting down');
     }
 
+    public function handleSignalReceived(int $signal): void
+    {
+        $this->logger->info(
+            'Signal received: ' . $this->getSignalName($signal),
+        );
+    }
+
+    public function handleInterrupt(): void
+    {
+        $this->logger->info('Execution interrupted, waiting for current iteration to complete then quitting');
+    }
+
     public function handleMessageReceived(MessageInterface $message): void
     {
         $this->logger->info('Processing message');
@@ -60,5 +72,18 @@ class LoggingEventHandler implements CommandEventHandlerInterface, WorkerEventHa
 
     public function handleWorkerFinally(): void
     {
+    }
+
+    protected function getSignalName(int $signal): string
+    {
+        // Source: @hanshenrik https://stackoverflow.com/questions/58471528/get-signal-name-from-signal-number-in-php
+        foreach (get_defined_constants(true)['pcntl'] as $name => $num) {
+            // the _ is to ignore SIG_IGN and SIG_DFL and SIG_ERR and SIG_BLOCK and SIG_UNBLOCK and SIG_SETMARK, and maybe more, who knows
+            if ($num === $signal && str_starts_with($name, 'SIG') && $name[3] !== '_') {
+                return $name;
+            }
+        }
+
+        return 'UNKNOWN (' . $signal . ')';
     }
 }

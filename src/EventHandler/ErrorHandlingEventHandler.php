@@ -42,6 +42,10 @@ class ErrorHandlingEventHandler implements CommandEventHandlerInterface, WorkerE
     {
     }
 
+    public function handleSignalReceived(int $signal): void
+    {
+    }
+
     public function handleMessageReceived(MessageInterface $message): void
     {
     }
@@ -56,6 +60,10 @@ class ErrorHandlingEventHandler implements CommandEventHandlerInterface, WorkerE
     }
 
     public function handleWorkerFinally(): void
+    {
+    }
+
+    public function handleInterrupt(): void
     {
     }
 }
