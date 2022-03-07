@@ -72,7 +72,7 @@ class WorkerCommand extends Command implements SignalReceiverInterface
         $this->signalHandler?->setReceiver($this);
         $this->processInputs($input);
 
-        $targetRunTimeSeconds = (int)$input->getOption('max-iterations');
+        $targetRunTimeSeconds = (int)$input->getOption('target-run-time-seconds');
         $maxIterations        = (int)$input->getOption('max-iterations');
 
         if ($maxIterations < 1) {
