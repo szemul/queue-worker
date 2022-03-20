@@ -15,7 +15,7 @@ class CommandEventHandlerRegistryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $sut = $this->getSut();
         /** @var CommandEventHandlerInterface $handler */
