@@ -9,7 +9,7 @@ class InterruptedValue
     {
     }
 
-    public function isInterruped(): bool
+    public function isInterrupted(): bool
     {
         return $this->interrupted;
     }

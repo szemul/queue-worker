@@ -21,6 +21,7 @@ class PcntlSignalHandler implements SignalHandlerInterface
         return $this;
     }
 
+    /** @codeCoverageIgnore */
     public function register(): void
     {
         foreach ($this->handledSignals as $signal) {

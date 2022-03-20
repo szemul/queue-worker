@@ -48,13 +48,38 @@ class WorkerCommand extends Command implements SignalReceiverInterface
         return $this;
     }
 
+    public function getEventHandler(): ?CommandEventHandlerInterface
+    {
+        return $this->eventHandler;
+    }
+
+    public function getSignalHandler(): ?SignalHandlerInterface
+    {
+        return $this->signalHandler;
+    }
+
+    public function getDateHelper(): DateHelper
+    {
+        return $this->dateHelper;
+    }
+
+    public function getInterruptedValue(): InterruptedValue
+    {
+        return $this->interruptedValue;
+    }
+
+    public function getWorker(): WorkerInterface
+    {
+        return $this->worker;
+    }
+
     protected function configure(): void
     {
         $this->addOption(
             'max-iterations',
             'i',
             InputOption::VALUE_REQUIRED,
-            'The maximum number of iterations to process',
+            'The maximum number of iterations to process. 0 means unlimited',
             $this->defaultMaxIterations,
         );
 
@@ -74,26 +99,25 @@ class WorkerCommand extends Command implements SignalReceiverInterface
 
         $targetRunTimeSeconds = (int)$input->getOption('target-run-time-seconds');
         $maxIterations        = (int)$input->getOption('max-iterations');
-
-        if ($maxIterations < 1) {
-            $maxIterations = PHP_INT_MAX;
-        }
-
-        $iterations = 0;
-        $stopAt     = $this->dateHelper->getCurrentTime()->addSeconds($targetRunTimeSeconds);
+        $iterations           = 0;
+        $stopAt               = $this->dateHelper->getCurrentTime()->addSeconds($targetRunTimeSeconds);
 
         $this->eventHandler?->handleBeforeLoop();
 
         try {
             do {
-                if ($this->interruptedValue->isInterruped()) {
+                if ($this->interruptedValue->isInterrupted()) {
                     break;
                 }
 
                 $this->eventHandler?->handleIterationStart();
                 $this->worker->work($this->interruptedValue);
                 $this->eventHandler?->handleIterationComplete();
-            } while ($stopAt->greaterThan($this->dateHelper->getCurrentTime()) && ++$iterations < $maxIterations);
+            } while (
+                $stopAt->greaterThan($this->dateHelper->getCurrentTime())
+                && $maxIterations > 0
+                && ++$iterations < $maxIterations
+            );
         } catch (Throwable $e) {
             $this->eventHandler?->handleCommandException($e);
 
@@ -102,7 +126,7 @@ class WorkerCommand extends Command implements SignalReceiverInterface
             $this->eventHandler?->handleCommandFinally();
         }
 
-        if ($this->interruptedValue->isInterruped()) {
+        if ($this->interruptedValue->isInterrupted()) {
             $this->eventHandler?->handleCommandInterrupted();
 
             return TerminatorInterface::EXIT_CODE_SIGNAL_ABORT;
@@ -120,14 +144,14 @@ class WorkerCommand extends Command implements SignalReceiverInterface
 
     public function receiveSignal(int $signal): void
     {
-        $this->eventHandler->handleSignalReceived($signal);
+        $this->eventHandler?->handleSignalReceived($signal);
 
         switch ($signal) {
             case SIGTERM:
             case SIGHUP:
             case SIGINT:
                 $this->interruptedValue->setInterrupted(true);
-                $this->eventHandler->handleInterrupt();
+                $this->eventHandler?->handleInterrupt();
                 break;
         }
     }

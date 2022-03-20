@@ -24,6 +24,22 @@ class QueueWorker implements WorkerInterface
         return $this;
     }
 
+    public function getEventHandler(): ?WorkerEventHandlerInterface
+    {
+        return $this->eventHandler;
+    }
+
+    public function getQueue(): ConsumerInterface
+    {
+        return $this->queue;
+    }
+
+    public function getProcessor(): MessageProcessorInterface
+    {
+        return $this->processor;
+    }
+
+    /** @throws Throwable */
     public function work(InterruptedValue $interruptedValue): void
     {
         $message = $this->queue->getMessage();
@@ -32,7 +48,7 @@ class QueueWorker implements WorkerInterface
             return;
         }
 
-        if ($interruptedValue->isInterruped()) {
+        if ($interruptedValue->isInterrupted()) {
             $this->queue->abortMessage($message);
 
             return;
@@ -48,6 +64,8 @@ class QueueWorker implements WorkerInterface
         } catch (Throwable $e) {
             // event handler process
             $this->eventHandler?->handleWorkerException($e);
+
+            throw $e;
         } finally {
             $this->eventHandler?->handleWorkerFinally();
         }

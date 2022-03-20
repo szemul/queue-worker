@@ -23,6 +23,12 @@ class WorkerEventHandlerRegistry implements WorkerEventHandlerInterface
         return $this;
     }
 
+    /** @return WorkerEventHandlerInterface[] */
+    public function getHandlers(): array
+    {
+        return $this->handlers;
+    }
+
     public function handleMessageReceived(MessageInterface $message): void
     {
         foreach ($this->handlers as $handler) {

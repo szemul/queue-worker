@@ -22,6 +22,12 @@ class CommandEventHandlerRegistry implements CommandEventHandlerInterface
         return $this;
     }
 
+    /** @return CommandEventHandlerInterface[] */
+    public function getHandlers(): array
+    {
+        return $this->handlers;
+    }
+
     public function handleBeforeLoop(): void
     {
         foreach ($this->handlers as $handler) {

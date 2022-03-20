@@ -11,6 +11,7 @@ use Szemul\QueueWorker\EventHandler\WorkerEventHandlerInterface;
 use Szemul\QueueWorker\MessageProcessor\MessageProcessorInterface;
 use Szemul\QueueWorker\SignalHandler\SignalHandlerInterface;
 use Szemul\QueueWorker\Value\InterruptedValue;
+use Szemul\QueueWorker\Worker\NonThrowingQueueWorker;
 use Szemul\QueueWorker\Worker\QueueWorker;
 
 class QueueCommandBuilder
@@ -45,10 +46,17 @@ class QueueCommandBuilder
         return $this;
     }
 
-    public function build(string $name, ConsumerInterface $consumer, MessageProcessorInterface $processor): WorkerCommand
-    {
-        $worker = (new QueueWorker($consumer, $processor))
-            ->setEventHandler($this->workerEventHandler);
+    public function build(
+        string $name,
+        ConsumerInterface $consumer,
+        MessageProcessorInterface $processor,
+        bool $throwingWorker = true,
+    ): WorkerCommand {
+        if ($throwingWorker) {
+            $worker = (new QueueWorker($consumer, $processor))->setEventHandler($this->workerEventHandler);
+        } else {
+            $worker = (new NonThrowingQueueWorker($consumer, $processor))->setEventHandler($this->workerEventHandler);
+        }
 
         return (new WorkerCommand($this->dateHelper, $this->interruptedValue, $worker, $name))
             ->setEventHandler($this->commandEventHandler)
