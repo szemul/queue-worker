@@ -10,7 +10,6 @@ use Szemul\QueueWorker\Worker\QueueWorker;
 
 class NonThrowingQueueWorkerTest extends QueueWorkerTest
 {
-
     public function testWorkWithException(): void
     {
         $eventHandler = $this->getEventHandler();

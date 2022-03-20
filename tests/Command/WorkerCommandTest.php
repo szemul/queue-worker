@@ -189,7 +189,6 @@ class WorkerCommandTest extends TestCase
             ->expectCommandInterruptedEvent($eventHandler);
 
         $this->assertSame(TerminatorInterface::EXIT_CODE_SIGNAL_ABORT, $this->runExecute($input, $output));
-
     }
 
     private function expectInterruptedValueSetToInterrupted(): static

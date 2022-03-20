@@ -90,7 +90,6 @@ class QueueWorkerTest extends TestCase
             ->expectMessageProcessedEvent($eventHandler, $message)
             ->expectWorkerFinallyEvent($eventHandler);
 
-
         $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue);
     }
 

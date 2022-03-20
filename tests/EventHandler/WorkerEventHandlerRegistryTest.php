@@ -26,7 +26,6 @@ class WorkerEventHandlerRegistryTest extends TestCase
         $result = $sut->add($handler);
         $this->assertSame($sut, $result);
         $this->assertSame([$handler], $sut->getHandlers());
-
     }
 
     public function testHandleMessageProcessed(): void
@@ -45,7 +44,6 @@ class WorkerEventHandlerRegistryTest extends TestCase
     {
         $exception = new RuntimeException('test');
         $this->getSut(...$this->getHandlers(2, 'handleWorkerException', $exception))->handleWorkerException($exception);
-
     }
 
     public function testHandleWorkerFinally(): void

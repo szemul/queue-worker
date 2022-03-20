@@ -16,7 +16,6 @@ use Szemul\QueueWorker\Worker\QueueWorker;
 
 class QueueCommandBuilder
 {
-
     protected ?WorkerEventHandlerInterface  $workerEventHandler  = null;
     protected ?CommandEventHandlerInterface $commandEventHandler = null;
     protected ?SignalHandlerInterface       $signalHandler       = null;

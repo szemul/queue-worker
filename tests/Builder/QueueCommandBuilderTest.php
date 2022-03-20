@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Szemul\QueueWorker\Test\Builder;
 
 use Mockery;
-use Mockery\MockInterface;
 use Szemul\Helper\DateHelper;
 use Szemul\Queue\Queue\ConsumerInterface;
 use Szemul\QueueWorker\Builder\QueueCommandBuilder;
