@@ -115,8 +115,10 @@ class WorkerCommand extends Command implements SignalReceiverInterface
                 $this->eventHandler?->handleIterationComplete();
             } while (
                 $stopAt->greaterThan($this->dateHelper->getCurrentTime())
-                && $maxIterations > 0
-                && ++$iterations < $maxIterations
+                && (
+                    $maxIterations < 1
+                    || ++$iterations < $maxIterations
+                )
             );
         } catch (Throwable $e) {
             $this->eventHandler?->handleCommandException($e);

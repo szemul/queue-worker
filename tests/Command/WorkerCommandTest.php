@@ -142,16 +142,16 @@ class WorkerCommandTest extends TestCase
 
     public function testExecuteWithTimeLimit(): void
     {
-        $input        = $this->getInput(2, 0);
+        $input        = $this->getInput(3, 0);
         $output       = $this->getOutput();
         $eventHandler = $this->getEventHandler();
 
         $this->sut->setEventHandler($eventHandler);
 
-        $this->expectWorkCalled(1)
-            ->expectCurrentTimeRetrieved(1)
+        $this->expectWorkCalled(3)
+            ->expectCurrentTimeRetrieved(3)
             ->expectInterruptedChecked()
-            ->expectExecuteEvents($eventHandler, 1)
+            ->expectExecuteEvents($eventHandler, 3)
             ->expectFinishedEvent($eventHandler);
 
         $this->assertSame(0, $this->runExecute($input, $output));
