@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Szemul\QueueWorker\Worker;
 
+use Symfony\Component\Console\Input\InputInterface;
 use Szemul\Queue\Queue\ConsumerInterface;
 use Szemul\QueueWorker\EventHandler\WorkerEventHandlerInterface;
 use Szemul\QueueWorker\MessageProcessor\MessageProcessorInterface;
@@ -40,7 +41,7 @@ class QueueWorker implements WorkerInterface
     }
 
     /** @throws Throwable */
-    public function work(InterruptedValue $interruptedValue): void
+    public function work(InterruptedValue $interruptedValue, InputInterface $input): void
     {
         $message = $this->queue->getMessage();
 
@@ -69,5 +70,10 @@ class QueueWorker implements WorkerInterface
         } finally {
             $this->eventHandler?->handleWorkerFinally();
         }
+    }
+
+    public function getAdditionalInputDefinitions(): array
+    {
+        return [];
     }
 }

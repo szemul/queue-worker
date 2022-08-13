@@ -8,6 +8,7 @@ use RuntimeException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use Symfony\Component\Console\Input\InputInterface;
 use Szemul\Queue\Message\MessageInterface;
 use Szemul\Queue\Queue\ConsumerInterface;
 use Szemul\QueueWorker\EventHandler\WorkerEventHandlerInterface;
@@ -24,6 +25,7 @@ class QueueWorkerTest extends TestCase
 
     protected ConsumerInterface|MockInterface         $queue;
     protected MessageProcessorInterface|MockInterface $processor;
+    protected InputInterface|MockInterface            $input;
     protected QueueWorker                             $sut;
     protected InterruptedValue                        $interruptedValue;
 
@@ -33,6 +35,7 @@ class QueueWorkerTest extends TestCase
 
         $this->queue     = Mockery::mock(ConsumerInterface::class); // @phpstan-ignore-line
         $this->processor = Mockery::mock(MessageProcessorInterface::class); // @phpstan-ignore-line
+        $this->input     = Mockery::mock(InputInterface::class); // @phpstan-ignore-line
 
         $this->sut = $this->getSut();
 
@@ -65,7 +68,7 @@ class QueueWorkerTest extends TestCase
     {
         $this->expectMessageRetrieved(null);
 
-        $this->sut->setEventHandler($this->getEventHandler())->work($this->interruptedValue);
+        $this->sut->setEventHandler($this->getEventHandler())->work($this->interruptedValue, $this->input);
     }
 
     public function testWorkWithInterrupted(): void
@@ -75,7 +78,8 @@ class QueueWorkerTest extends TestCase
         $this->expectMessageRetrieved($message)
             ->expectMessageAborted($message);
 
-        $this->sut->setEventHandler($this->getEventHandler())->work($this->interruptedValue->setInterrupted(true));
+        $this->sut->setEventHandler($this->getEventHandler())
+            ->work($this->interruptedValue->setInterrupted(true), $this->input);
     }
 
     public function testWorkWithSuccess(): void
@@ -90,7 +94,7 @@ class QueueWorkerTest extends TestCase
             ->expectMessageProcessedEvent($eventHandler, $message)
             ->expectWorkerFinallyEvent($eventHandler);
 
-        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue);
+        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue, $this->input);
     }
 
     public function testWorkWithSuccessWithoutEventHandler(): void
@@ -101,7 +105,7 @@ class QueueWorkerTest extends TestCase
             ->expectMessageProcessed($message)
             ->expectMessageFinished($message);
 
-        $this->sut->work($this->interruptedValue);
+        $this->sut->work($this->interruptedValue, $this->input);
     }
 
     public function testWorkWithException(): void
@@ -117,7 +121,7 @@ class QueueWorkerTest extends TestCase
             ->expectWorkerExceptionEvent($eventHandler, $exception)
             ->expectWorkerFinallyEvent($eventHandler);
 
-        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue);
+        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue, $this->input);
     }
 
     protected function expectMessageRetrieved(?MessageInterface $message): static

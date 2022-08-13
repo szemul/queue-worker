@@ -22,7 +22,7 @@ class NonThrowingQueueWorkerTest extends QueueWorkerTest
             ->expectWorkerExceptionEvent($eventHandler, $exception)
             ->expectWorkerFinallyEvent($eventHandler);
 
-        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue);
+        $this->sut->setEventHandler($eventHandler)->work($this->interruptedValue, $this->input);
     }
 
     #[Pure]

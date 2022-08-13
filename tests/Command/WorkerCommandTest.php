@@ -42,6 +42,8 @@ class WorkerCommandTest extends TestCase
         $this->interruptedValue = Mockery::mock(InterruptedValue::class); // @phpstan-ignore-line
         $this->worker           = Mockery::mock(WorkerInterface::class); // @phpstan-ignore-line
 
+        $this->expectGetAdditionalInputDefinitionsCalled();
+
         // @phpstan-ignore-next-line
         $this->sut = new WorkerCommand($this->dateHelper, $this->interruptedValue, $this->worker, self::NAME);
     }
@@ -131,7 +133,7 @@ class WorkerCommandTest extends TestCase
 
         $this->sut->setEventHandler($eventHandler);
 
-        $this->expectWorkCalled(2)
+        $this->expectWorkCalled(2, $input)
             ->expectCurrentTimeRetrieved(2)
             ->expectInterruptedChecked()
             ->expectExecuteEvents($eventHandler, 2)
@@ -148,7 +150,7 @@ class WorkerCommandTest extends TestCase
 
         $this->sut->setEventHandler($eventHandler);
 
-        $this->expectWorkCalled(3)
+        $this->expectWorkCalled(3, $input)
             ->expectCurrentTimeRetrieved(3)
             ->expectInterruptedChecked()
             ->expectExecuteEvents($eventHandler, 3)
@@ -166,7 +168,7 @@ class WorkerCommandTest extends TestCase
 
         $this->sut->setEventHandler($eventHandler);
 
-        $this->expectWorkCalledAndThrowsException($exception)
+        $this->expectWorkCalledAndThrowsException($exception, $input)
             ->expectCurrentTimeRetrieved(0)
             ->expectInterruptedChecked()
             ->expectExecuteEventsWithException($eventHandler)
@@ -267,18 +269,26 @@ class WorkerCommandTest extends TestCase
         return $this;
     }
 
-    private function expectWorkCalled(int $iterations): static
+    private function expectGetAdditionalInputDefinitionsCalled(): static
     {
         // @phpstan-ignore-next-line
-        $this->worker->shouldReceive('work')->times($iterations)->with($this->interruptedValue);
+        $this->worker->shouldReceive('getAdditionalInputDefinitions')->once()->withNoArgs()->andReturn([]);
 
         return $this;
     }
 
-    private function expectWorkCalledAndThrowsException(Throwable $throwable): static
+    private function expectWorkCalled(int $iterations, InputInterface $input): static
     {
         // @phpstan-ignore-next-line
-        $this->worker->shouldReceive('work')->once()->with($this->interruptedValue)->andThrow($throwable);
+        $this->worker->shouldReceive('work')->times($iterations)->with($this->interruptedValue, $input);
+
+        return $this;
+    }
+
+    private function expectWorkCalledAndThrowsException(Throwable $throwable, InputInterface $input): static
+    {
+        // @phpstan-ignore-next-line
+        $this->worker->shouldReceive('work')->once()->with($this->interruptedValue, $input)->andThrow($throwable);
 
         return $this;
     }
