@@ -64,6 +64,11 @@ class QueueWorkerTest extends TestCase
         $this->assertSame($eventHandler, $this->sut->getEventHandler());
     }
 
+    public function testGetAdditionalInputDefinitions(): void
+    {
+        $this->assertEmpty($this->sut->getAdditionalInputDefinitions());
+    }
+
     public function testWorkWithNoMessage(): void
     {
         $this->expectMessageRetrieved(null);
