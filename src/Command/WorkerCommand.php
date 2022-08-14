@@ -5,6 +5,7 @@ declare(ticks=1);
 
 namespace Szemul\QueueWorker\Command;
 
+use Symfony\Component\Console\Input\InputDefinition;
 use Szemul\Helper\DateHelper;
 use Szemul\QueueWorker\EventHandler\CommandEventHandlerInterface;
 use Szemul\QueueWorker\SignalHandler\SignalHandlerInterface;
@@ -75,20 +76,28 @@ class WorkerCommand extends Command implements SignalReceiverInterface
 
     protected function configure(): void
     {
-        $this->addOption(
-            'max-iterations',
-            'i',
-            InputOption::VALUE_REQUIRED,
-            'The maximum number of iterations to process. 0 means unlimited',
-            $this->defaultMaxIterations,
-        );
-
-        $this->addOption(
-            'target-run-time-seconds',
-            't',
-            InputOption::VALUE_REQUIRED,
-            'The targeted run time for the worker in seconds',
-            $this->defaultTargetRuntimeSeconds,
+        $this->setDefinition(
+            new InputDefinition(
+                array_merge(
+                    [
+                        new InputOption(
+                            'max-iterations',
+                            'i',
+                            InputOption::VALUE_REQUIRED,
+                            'The maximum number of iterations to process. 0 means unlimited',
+                            $this->defaultMaxIterations,
+                        ),
+                        new InputOption(
+                            'target-run-time-seconds',
+                            't',
+                            InputOption::VALUE_REQUIRED,
+                            'The targeted run time for the worker in seconds',
+                            $this->defaultTargetRuntimeSeconds,
+                        ),
+                    ],
+                    $this->worker->getAdditionalInputDefinitions(),
+                ),
+            ),
         );
     }
 
@@ -111,7 +120,7 @@ class WorkerCommand extends Command implements SignalReceiverInterface
                 }
 
                 $this->eventHandler?->handleIterationStart();
-                $this->worker->work($this->interruptedValue);
+                $this->worker->work($this->interruptedValue, $input);
                 $this->eventHandler?->handleIterationComplete();
             } while (
                 $stopAt->greaterThan($this->dateHelper->getCurrentTime())
