@@ -99,21 +99,6 @@ class WorkerCommand extends Command implements SignalReceiverInterface
                 ),
             ),
         );
-        $this->addOption(
-            'max-iterations',
-            'i',
-            InputOption::VALUE_REQUIRED,
-            'The maximum number of iterations to process. 0 means unlimited',
-            $this->defaultMaxIterations,
-        );
-
-        $this->addOption(
-            'target-run-time-seconds',
-            't',
-            InputOption::VALUE_REQUIRED,
-            'The targeted run time for the worker in seconds',
-            $this->defaultTargetRuntimeSeconds,
-        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
