@@ -38,9 +38,9 @@ class WorkerCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->dateHelper       = Mockery::mock(DateHelper::class); // @phpstan-ignore-line
-        $this->interruptedValue = Mockery::mock(InterruptedValue::class); // @phpstan-ignore-line
-        $this->worker           = Mockery::mock(WorkerInterface::class); // @phpstan-ignore-line
+        $this->dateHelper       = Mockery::mock(DateHelper::class);
+        $this->interruptedValue = Mockery::mock(InterruptedValue::class);
+        $this->worker           = Mockery::mock(WorkerInterface::class);
 
         $this->expectGetAdditionalInputDefinitionsCalled();
 
@@ -105,9 +105,6 @@ class WorkerCommandTest extends TestCase
     public function testReceiveSignalWithSigpipeWithEventHandler(): void
     {
         $this->sut->receiveSignal(SIGPIPE);
-
-        // Noop assert
-        $this->assertTrue(true);
     }
 
     public function testSetEventHandler(): void
@@ -332,12 +329,12 @@ class WorkerCommandTest extends TestCase
             ->with('max-iterations')
             ->andReturn((string)$maxIterations);
 
-        return $input; // @phpstan-ignore-line
+        return $input;
     }
 
     private function getOutput(): OutputInterface|MockInterface
     {
-        return Mockery::mock(OutputInterface::class); // @phpstan-ignore-line
+        return Mockery::mock(OutputInterface::class);
     }
 
     private function getEventHandler(): MockInterface|CommandEventHandlerInterface

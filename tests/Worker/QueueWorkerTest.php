@@ -33,9 +33,9 @@ class QueueWorkerTest extends TestCase
     {
         parent::setUp();
 
-        $this->queue     = Mockery::mock(ConsumerInterface::class); // @phpstan-ignore-line
-        $this->processor = Mockery::mock(MessageProcessorInterface::class); // @phpstan-ignore-line
-        $this->input     = Mockery::mock(InputInterface::class); // @phpstan-ignore-line
+        $this->queue     = Mockery::mock(ConsumerInterface::class);
+        $this->processor = Mockery::mock(MessageProcessorInterface::class);
+        $this->input     = Mockery::mock(InputInterface::class);
 
         $this->sut = $this->getSut();
 
@@ -194,7 +194,7 @@ class QueueWorkerTest extends TestCase
 
     protected function getEventHandler(): WorkerEventHandlerInterface|MockInterface
     {
-        return Mockery::mock(WorkerEventHandlerInterface::class); // @phpstan-ignore-line
+        return Mockery::mock(WorkerEventHandlerInterface::class);
     }
 
     protected function getMessage(): MessageInterface

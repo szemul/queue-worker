@@ -38,7 +38,6 @@ class QueueCommandBuilderTest extends TestCase
         $this->consumer         = Mockery::mock(ConsumerInterface::class); // @phpstan-ignore-line
         $this->messageProcessor = Mockery::mock(MessageProcessorInterface::class); // @phpstan-ignore-line
 
-        // @phpstan-ignore-next-line
         $this->sut              = new QueueCommandBuilder($this->dateHelper, $this->interruptedValue);
     }
 
@@ -95,7 +94,6 @@ class QueueCommandBuilderTest extends TestCase
             ->setCommandEventHandler($commandEventHandler)
             ->build(self::NAME, $this->consumer, $this->messageProcessor);
 
-        /** @var QueueWorker $worker */
         $worker = $command->getWorker();
 
         $this->assertNotInstanceOf(NonThrowingQueueWorker::class, $worker);
@@ -107,7 +105,7 @@ class QueueCommandBuilderTest extends TestCase
         $this->assertSame($this->dateHelper, $command->getDateHelper());
         $this->assertSame($this->interruptedValue, $command->getInterruptedValue());
 
-        $this->assertNotInstanceOf(NonThrowingQueueWorker::class, $worker);
+        $this->assertNotInstanceOf(NonThrowingQueueWorker::class, $worker); // @phpstan-ignore-line
         $this->assertInstanceOf(QueueWorker::class, $worker);
         $this->assertSame($workerEventHandler, $worker->getEventHandler());
         $this->assertSame($this->messageProcessor, $worker->getProcessor());

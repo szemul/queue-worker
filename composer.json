@@ -4,10 +4,10 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-pcntl": "*",
-        "symfony/console": "^v5.3.6|^v6.0.0",
-        "szemul/queue": "^1.0|2.0",
+        "symfony/console": "^v5.3.6|^v6.0.0|^v7.0",
+        "szemul/queue": "^1.0.0|^2.0.0",
         "szemul/error-handler": "^1.0.0|^2.0.0",
         "szemul/helper": "^1.0.0"
     },
@@ -16,8 +16,8 @@
         "jetbrains/phpstorm-attributes": "^1.0",
         "jeroen/psr-log-test-doubles": "^3.1.0",
         "mockery/mockery": "^1.0",
-        "phpstan/phpstan": "^1.4.6",
-        "phpunit/phpunit": "^9.5.5"
+        "phpstan/phpstan": "^2",
+        "phpunit/phpunit": "^12"
     },
     "autoload": {
         "psr-4": {

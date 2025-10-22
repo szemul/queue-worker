@@ -23,7 +23,7 @@ class ErrorHandlingEventHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->errorHandlerRegistry = Mockery::mock(ErrorHandlerRegistry::class); // @phpstan-ignore-line
+        $this->errorHandlerRegistry = Mockery::mock(ErrorHandlerRegistry::class);
 
         $this->sut = new ErrorHandlingEventHandler($this->errorHandlerRegistry); // @phpstan-ignore-line
     }
@@ -31,8 +31,8 @@ class ErrorHandlingEventHandlerTest extends TestCase
     public function testHandleBeforeLoop(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleBeforeLoop();
-        $this->assertTrue(true);
     }
 
     public function testHandleCommandException(): void
@@ -44,64 +44,64 @@ class ErrorHandlingEventHandlerTest extends TestCase
     public function testHandleCommandFinally(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleCommandFinally();
-        $this->assertTrue(true);
     }
 
     public function testHandleCommandFinished(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleCommandFinished();
-        $this->assertTrue(true);
     }
 
     public function testHandleCommandInterrupted(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleCommandInterrupted();
-        $this->assertTrue(true);
     }
 
     public function testHandleInterrupt(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleInterrupt();
-        $this->assertTrue(true);
     }
 
     public function testHandleIterationComplete(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleIterationComplete();
-        $this->assertTrue(true);
     }
 
     public function testHandleIterationStart(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleIterationStart();
-        $this->assertTrue(true);
     }
 
     public function testHandleMessageProcessed(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleMessageProcessed(Mockery::mock(MessageInterface::class)); // @phpstan-ignore-line
-        $this->assertTrue(true);
     }
 
     public function testHandleMessageReceived(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleMessageReceived(Mockery::mock(MessageInterface::class)); // @phpstan-ignore-line
-        $this->assertTrue(true);
     }
 
     public function testHandleSignalReceived(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleSignalReceived(SIGINT);
-        $this->assertTrue(true);
     }
 
     public function testHandleWorkerException(): void
@@ -113,8 +113,8 @@ class ErrorHandlingEventHandlerTest extends TestCase
     public function testHandleWorkerFinally(): void
     {
         // Noop test, this method should not do anything
+        $this->expectNotToPerformAssertions();
         $this->sut->handleWorkerFinally();
-        $this->assertTrue(true);
     }
 
     public function expectExceptionHandled(): RuntimeException
